@@ -13,7 +13,9 @@ jobs:
         if: always()
         uses: dawidd6/action-send-mail@v3
         with:
-          host: smtp.google.com
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
           username: ${{secrets.ACCOUNT}}
           password: ${{secrets.MAIL_PASSWORD}}
           from: ${{secrets.MAIL_ADDRESS}}
