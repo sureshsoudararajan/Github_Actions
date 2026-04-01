@@ -8,33 +8,15 @@ jobs:
     steps:
       - name: Send mail to friend
         run: echo "Hello Friend"
-        
+
       - name: configuration to send mail
         if: always()
-        uses: devellany/send-mail@v1.0.2
-          with:
-          # Enter SMTP host.
-    host: 
-    # Enter SMTP port. (defaults to 465)
-    port: # optional, default is 465
-    # Enter SMTP host account.
-    account: 
-    # Enter SMTP host account password.
-    password: 
-    # Enter sender name.
-    sender: 
-    # Enter sender mail.
-    from: 
-    # Enter recipient emails and separated with 'comma'. (The prefix 'file://' if you want to read a file)
-    to: 
-    # Enter the subject of the mail. (The prefix 'file://' if you want to read a file)
-    subject: 
-    # Enter the body of the mail. (The prefix 'file://' if you want to read a file)
-    body: 
-    # Enter Content-Type HTTP header. (defaults to 'text/plain')
-    contentType: # optional, default is text/plain
-    # Attachment files are entered as an array. Required key 'path'. (The prefix 'file://' if you want to read a file)
-    attachments: # optional
-          
-        
-        
+        uses: dawidd6/action-send-mail@v3
+        with:
+          host: smtp.google.com
+          username: ${{secrets.ACCOUNT}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          from: ${{secrets.MAIL_ADDRESS}}
+          to: ${{secrets.RECIPIENT_EMAIL}}
+          subject: Mail Send to use Github Actions
+          body: Hello Suresh's ,Congrats on your first email sent from GitHub Actions!
