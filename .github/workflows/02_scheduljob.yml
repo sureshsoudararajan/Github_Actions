@@ -1,20 +1,19 @@
 name: Scheduled Job
 on:
-    push: # Add this temporarily
-    schedule:
-        - cron: "* * * * *"
+  schedule:
+    - cron: "*/5 * * * *"  # Changed to every 5 minutes
 
 jobs:
-    hello_world:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+  hello_world:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-            - name: Set up Python
-              uses: actions/setup-python@v2
-              with:
-                  python-version: "3.x"
-
-            - name: Run a script
-              run: python hello.py
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          
+      - name: Run a script
+        run: python hello.py
