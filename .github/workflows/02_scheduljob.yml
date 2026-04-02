@@ -1,0 +1,18 @@
+name: Scheduled Job
+on:
+    schedule:
+        - cron: "* * * * *"
+
+jobs:
+    hello_world:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: "3.x"
+            - name: Run a script
+              run: python hello.py

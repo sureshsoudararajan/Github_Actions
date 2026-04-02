@@ -10,7 +10,7 @@ jobs:
         run: echo "Hello Friend"
 
       - name: configuration to send mail
-        if: always()
+        if: success()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
