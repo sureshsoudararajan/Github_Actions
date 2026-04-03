@@ -18,20 +18,28 @@ jobs:
 
             - name: Deploy to EC2
               run: |
-                  ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem ${{secrets.EC2_USER}}@${{secrets.EC2_HOST}} << 'EOF'
+                  ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+
                   sudo apt update
-                  sudo apt install git -y
+                  sudo apt install git python3-venv -y
 
-                  if [ -d "flask_app" ]; then
-                      cd flask_app
-                      git pull origin master
-                  else
-                      git clone https://github.com/sureshsoundararajan/Github_Actions.git
-                      cd flask_app
-                  fi
+                  # Remove old repo if exists
+                  rm -rf Github_Actions
 
-                  pip3 install flask
 
+                  git clone https://github.com/sureshsoudararajan/Github_Actions.git
+                  cd Github_Actions
+
+                  # Create virtual env
+                  python3 -m venv venv
+                  source venv/bin/activate
+
+                  pip install flask
+
+                  # Kill old process
                   pkill -f main.py || true
+
+                  # Run app
                   nohup python3 main.py > flask_app.log 2>&1 &
+
                   EOF
