@@ -1,0 +1,37 @@
+name: EC2 instance running using github actions flask
+on:
+    push:
+        branches: [master]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v3
+
+            - name: Setup SSH
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/aws_key.pem
+                  chmod 600 ~/.ssh/aws_key.pem
+
+            - name: Deploy to EC2
+              run: |
+                  ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem ${{secrets.EC2_USER}}@${{secrets.EC2_HOST}} << 'EOF'
+                  sudo apt update
+                  sudo apt install git -y
+
+                  if [ -d "flask_app" ]; then
+                      cd flask_app
+                      git pull origin master
+                  else
+                      git clone https://github.com/sureshsoundararajan/Github_Actions.git
+                      cd flask_app
+                  fi
+
+                  pip3 install flask
+
+                  pkill -f main.py || true
+                  nohup python3 main.py > flask_app.log 2>&1 &
+                  EOF
